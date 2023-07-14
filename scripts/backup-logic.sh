@@ -41,7 +41,7 @@ function create_snapshot(){
         RDB_TO_BACKUP=$(ls -d /tmp/* |grep redis-dump.*);
         RESTIC_PASSWORD=${ENV_NAME} restic -q -r /opt/backup/${ENV_NAME}  backup --tag "${DUMP_NAME} ${BACKUP_ADDON_COMMIT_ID} ${BACKUP_TYPE}" ${RDB_TO_BACKUP} | tee -a ${BACKUP_LOG_FILE};
     else
-        RESTIC_PASSWORD=${ENV_NAME} restic -q -r /opt/backup/${ENV_NAME}  backup --tag "${DUMP_NAME} ${BACKUP_ADDON_COMMIT_ID} ${BACKUP_TYPE}" ~/db_backup.sql | tee -a ${BACKUP_LOG_FILE}
+        RESTIC_PASSWORD=${ENV_NAME} restic -q -r /opt/backup/${ENV_NAME}  backup --tag "${DUMP_NAME} ${BACKUP_ADDON_COMMIT_ID} ${BACKUP_TYPE}" ~/postgres.dump | tee -a ${BACKUP_LOG_FILE}
     fi
 }
 
@@ -66,7 +66,7 @@ function backup(){
     else
         if [ "$COMPUTE_TYPE" == "postgres" ]; then
             PGPASSWORD="${DBPASSWD}" psql -U ${DBUSER} -d postgres -c "SELECT current_user" || { echo "DB credentials specified in add-on settings are incorrect!"; exit 1; }
-            PGPASSWORD="${DBPASSWD}" pg_dumpall -U ${DBUSER} > db_backup.sql || { echo "DB backup process failed."; exit 1; }
+            PGPASSWORD="${DBPASSWD}" pg_dump -Fc -Z 9 --file=postgres.dump -U ${DBUSER} flowcert || { echo "DB backup process failed."; exit 1; }
 	    sed -ci -e '0,/^ALTER ROLE webadmin WITH SUPERUSER/{/^ALTER ROLE webadmin WITH SUPERUSER/d}' db_backup.sql
         else
             mysql -h localhost -u ${DBUSER} -p${DBPASSWD} mysql --execute="SHOW COLUMNS FROM user" || { echo "DB credentials specified in add-on settings are incorrect!"; exit 1; }

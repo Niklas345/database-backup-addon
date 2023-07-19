@@ -134,6 +134,12 @@ settings:
         inputType: password
         caption: Database Password
         name: dbpass
+      - hideLabel: false
+        hidden: false
+        type: string
+        inputType: string
+        caption: Database Name
+        name: dbname
     onBeforeInit: scripts/configOnBeforeInit.js
         
   restore:

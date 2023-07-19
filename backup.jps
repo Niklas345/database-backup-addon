@@ -236,6 +236,7 @@ actions:
         nodeGroup: ${this.nodeGroup}
         dbuser: ${this.dbuser}
         dbpass: ${this.dbpass}
+        dbname: ${this.dbname}
 
   callScript:
     script: |-
@@ -309,3 +310,4 @@ actions:
         nodeGroup: ${targetNodes.nodeGroup}
         dbuser: ${settings.dbuser}
         dbpass: ${settings.dbpass}
+        dbname: ${settings.dbname}

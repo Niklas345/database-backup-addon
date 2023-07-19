@@ -18,7 +18,8 @@ function run() {
         storageEnv        : "${storageEnv}",
         nodeGroup         : "${nodeGroup}",
         dbuser            : "${dbuser}",
-        dbpass            : "${dbpass}"
+        dbpass            : "${dbpass}",
+        dbname            : "${dbname}"
     });
 
     jelastic.local.ReturnResult(

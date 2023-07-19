@@ -12,6 +12,7 @@ var scriptName        = getParam("scriptName", "${env.envName}-wp-backup"),
     nodeGroup         = getParam("nodeGroup"),
     dbuser            = getParam("dbuser"),
     dbpass            = getParam("dbpass");
+    dbname            = getParam("dbname");
 
 function run() {
     var BackupManager = use("scripts/backup-manager.js", {
@@ -28,7 +29,8 @@ function run() {
         storageEnv        : storageEnv,
         nodeGroup         : nodeGroup,
         dbuser            : dbuser,
-        dbpass            : dbpass
+        dbpass            : dbpass,
+        dbname            : dbname
     });
 
     jelastic.local.ReturnResult(

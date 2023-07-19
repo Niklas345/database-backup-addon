@@ -8,7 +8,7 @@ ENV_NAME=$6
 BACKUP_COUNT=$7
 DBUSER=$8
 DBPASSWD=$9
-DBNAME=$10
+DBNAME=${10}
 
 BACKUP_ADDON_REPO=$(echo ${BASE_URL}|sed 's|https:\/\/raw.githubusercontent.com\/||'|awk -F / '{print $1"/"$2}')
 BACKUP_ADDON_BRANCH=$(echo ${BASE_URL}|sed 's|https:\/\/raw.githubusercontent.com\/||'|awk -F / '{print $3}')

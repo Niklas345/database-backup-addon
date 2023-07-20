@@ -41,8 +41,10 @@ function create_snapshot(){
     if [ "$COMPUTE_TYPE" == "redis" ]; then
         RDB_TO_BACKUP=$(ls -d /tmp/* |grep redis-dump.*);
         RESTIC_PASSWORD=${ENV_NAME} restic -q -r /opt/backup/${ENV_NAME}  backup --tag "${DUMP_NAME} ${BACKUP_ADDON_COMMIT_ID} ${BACKUP_TYPE}" ${RDB_TO_BACKUP} | tee -a ${BACKUP_LOG_FILE};
-    else
+    elif [ "$COMPUTE_TYPE" == "postgres" ]; then
         RESTIC_PASSWORD=${ENV_NAME} restic -q -r /opt/backup/${ENV_NAME}  backup --tag "${DUMP_NAME} ${BACKUP_ADDON_COMMIT_ID} ${BACKUP_TYPE}" ~/postgres.dump | tee -a ${BACKUP_LOG_FILE}
+    elif [ "$COMPUTE_TYPE" == "mongodb" ]; then
+        ESTIC_PASSWORD=${ENV_NAME} restic -q -r /opt/backup/${ENV_NAME}  backup --tag "${DUMP_NAME} ${BACKUP_ADDON_COMMIT_ID} ${BACKUP_TYPE}" ~/db_backup.mongodump | tee -a ${BACKUP_LOG_FILE}
     fi
 }
 
@@ -64,15 +66,15 @@ function backup(){
                 redis-cli -h $i --rdb /tmp/redis-dump-cluster-$i.rdb || { echo "DB backup process failed."; exit 1; }
             done
         fi
-    else
-        if [ "$COMPUTE_TYPE" == "postgres" ]; then
-            PGPASSWORD="${DBPASSWD}" psql -U ${DBUSER} -d postgres -c "SELECT current_user" || { echo "DB credentials specified in add-on settings are incorrect!"; exit 1; }
-            PGPASSWORD="${DBPASSWD}" pg_dump -Fc -Z 9 --file=postgres.dump -U ${DBUSER} ${DBNAME} || { echo "DB backup process failed."; exit 1; }
+    elif [ "$COMPUTE_TYPE" == "postgres" ]; then
+      PGPASSWORD="${DBPASSWD}" psql -U ${DBUSER} -d postgres -c "SELECT current_user" || { echo "DB credentials specified in add-on settings are incorrect!"; exit 1; }
+      PGPASSWORD="${DBPASSWD}" pg_dump -Fc -Z 9 --file=postgres.dump -U ${DBUSER} ${DBNAME} || { echo "DB backup process failed."; exit 1; }
 	    sed -ci -e '0,/^ALTER ROLE webadmin WITH SUPERUSER/{/^ALTER ROLE webadmin WITH SUPERUSER/d}' db_backup.sql
-        else
-            mysql -h localhost -u ${DBUSER} -p${DBPASSWD} mysql --execute="SHOW COLUMNS FROM user" || { echo "DB credentials specified in add-on settings are incorrect!"; exit 1; }
-            mysqldump -h localhost -u ${DBUSER} -p${DBPASSWD} --force --single-transaction --quote-names --opt --all-databases > db_backup.sql || { echo "DB backup process failed."; exit 1; }
-        fi
+	  elif [ "$COMPUTE_TYPE" == "mongodb" ]; then
+	    mongodump --uri="mongodb://localhost:27017/${DBNAME}" --username ${DBUSER} --password ${DBPASSWD} --archive=db_backup.mongodump
+    else
+      mysql -h localhost -u ${DBUSER} -p${DBPASSWD} mysql --execute="SHOW COLUMNS FROM user" || { echo "DB credentials specified in add-on settings are incorrect!"; exit 1; }
+      mysqldump -h localhost -u ${DBUSER} -p${DBPASSWD} --force --single-transaction --quote-names --opt --all-databases > db_backup.sql || { echo "DB backup process failed."; exit 1; }
     fi
     rm -f /var/run/${ENV_NAME}_backup.pid
 }

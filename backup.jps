@@ -14,8 +14,7 @@ targetNodes:
     - mysql
     - mariadb-dockerized
     - perconadb
-  nodeGroup:
-    - nosqldb
+    - docker
 
 settings:
   main:

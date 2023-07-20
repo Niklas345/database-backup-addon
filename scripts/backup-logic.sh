@@ -71,7 +71,7 @@ function backup(){
       PGPASSWORD="${DBPASSWD}" pg_dump -Fc -Z 9 --file=postgres.dump -U ${DBUSER} ${DBNAME} || { echo "DB backup process failed."; exit 1; }
 	    sed -ci -e '0,/^ALTER ROLE webadmin WITH SUPERUSER/{/^ALTER ROLE webadmin WITH SUPERUSER/d}' db_backup.sql
 	  elif [ "$COMPUTE_TYPE" == "mongodb" ]; then
-	    mongodump --uri="mongodb://localhost:27017/${DBNAME}" --username ${DBUSER} --password ${DBPASSWD} --archive=db_backup.mongodump
+	    mongodump --uri="mongodb://localhost:27017/${DBNAME}" --username ${DBUSER} --password ${DBPASSWD} --archive=db_backup.mongodump || { echo "DB backup process failed."; exit 1; }
     else
       mysql -h localhost -u ${DBUSER} -p${DBPASSWD} mysql --execute="SHOW COLUMNS FROM user" || { echo "DB credentials specified in add-on settings are incorrect!"; exit 1; }
       mysqldump -h localhost -u ${DBUSER} -p${DBPASSWD} --force --single-transaction --quote-names --opt --all-databases > db_backup.sql || { echo "DB backup process failed."; exit 1; }

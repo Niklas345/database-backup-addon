@@ -44,7 +44,7 @@ function create_snapshot(){
     elif [ "$COMPUTE_TYPE" == "postgres" ]; then
         RESTIC_PASSWORD=${ENV_NAME} restic -q -r /opt/backup/${ENV_NAME}  backup --tag "${DUMP_NAME} ${BACKUP_ADDON_COMMIT_ID} ${BACKUP_TYPE}" ~/postgres.dump | tee -a ${BACKUP_LOG_FILE}
     elif [ "$COMPUTE_TYPE" == "mongodb" ]; then
-        RESTIC_PASSWORD=${ENV_NAME} restic -q -r /opt/backup/${ENV_NAME}  backup --tag "${DUMP_NAME} ${BACKUP_ADDON_COMMIT_ID} ${BACKUP_TYPE}" ~/db_backup.mongodump | tee -a ${BACKUP_LOG_FILE}
+        RESTIC_PASSWORD=${ENV_NAME} restic -q -r /opt/backup/${ENV_NAME}  backup --tag "${DUMP_NAME} ${BACKUP_ADDON_COMMIT_ID} ${BACKUP_TYPE}" /root/db_backup.mongodump | tee -a ${BACKUP_LOG_FILE}
     fi
 }
 

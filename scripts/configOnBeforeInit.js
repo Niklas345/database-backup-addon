@@ -127,5 +127,6 @@ if (scheduleType == '1') {
 jps.settings.main.fields[2].default = '${settings.backupCount}';
 jps.settings.main.fields[3].default = '${settings.dbuser}';
 jps.settings.main.fields[4].default = '${settings.dbpass}';
+jps.settings.main.fields[5].default = '${settings.dbname}';
 
 return settings;

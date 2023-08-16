@@ -1,20 +1,20 @@
 //@auth
 //@req(baseUrl, cronTime, dbuser, dbpass)
-var repoName = getParam("repoName");
+var repoName          = getParam("repoName");
 var defaultScriptName = "${env.envName}-wp-backup-" + repoName;
-var scriptName        = getParam("scriptName", defaultScriptName),
-    envName           = getParam("envName", "${env.envName}"),
-    envAppid          = getParam("envAppid", "${env.appid}"),
-    userId            = getparam("userId", ""),
-    backupCount       = getParam("backupCount", "5"),
-    storageNodeId     = getParam("storageNodeId"),
-    backupExecNode    = getParam("backupExecNode"),
-    storageEnv        = getParam("storageEnv"),
-    nodeGroup         = getParam("nodeGroup"),
-    dbuser            = getParam("dbuser"),
-    dbpass            = getParam("dbpass");
-    dbname            = getParam("dbname");
-    repoPass          = getParam("repoPass");
+var scriptName        = getParam("scriptName", defaultScriptName);
+var envName           = getParam("envName", "${env.envName}");
+var envAppid          = getParam("envAppid", "${env.appid}");
+var userId            = getparam("userId", "");
+var backupCount       = getParam("backupCount", "5");
+var storageNodeId     = getParam("storageNodeId");
+var backupExecNode    = getParam("backupExecNode");
+var storageEnv        = getParam("storageEnv");
+var nodeGroup         = getParam("nodeGroup");
+var dbuser            = getParam("dbuser");
+var dbpass            = getParam("dbpass");
+var dbname            = getParam("dbname");
+var repoPass          = getParam("repoPass");
 
 function run() {
     var BackupManager = use("scripts/backup-manager.js", {

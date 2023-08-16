@@ -14,7 +14,6 @@ var scriptName        = getParam("scriptName", defaultScriptName),
     dbuser            = getParam("dbuser"),
     dbpass            = getParam("dbpass");
     dbname            = getParam("dbname");
-    repoName          = getParam("repoName");
     repoPass          = getParam("repoPass");
 
 function run() {

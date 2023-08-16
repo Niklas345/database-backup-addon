@@ -16,6 +16,8 @@ function BackupManager(config) {
      *  [backupCount] : {String}
      *  [dbuser]: {String}
      *  [dbpass]: {String}
+     *  [repoName]: {String}
+     *  [repoPass]: {String}
      * }} config
      * @constructor
      */
@@ -121,6 +123,8 @@ function BackupManager(config) {
                 dbuser: config.dbuser,
                 dbpass: config.dbpass,
                 dbname: config.dbname,
+                repoName: config.repoName,
+                repoPass: config.repoPass
             }
         
         return me.exec([
@@ -139,19 +143,19 @@ function BackupManager(config) {
 		baseUrl : config.baseUrl
 	    }],
             [ me.cmd, [
-                'bash /root/%(envName)_backup-logic.sh check_backup_repo %(baseUrl) %(backupType) %(nodeId) %(backupLogFile) %(envName) %(backupCount) %(dbuser) %(dbpass) %(dbname)'
+                'bash /root/%(envName)_backup-logic.sh check_backup_repo %(baseUrl) %(backupType) %(nodeId) %(backupLogFile) %(envName) %(backupCount) %(dbuser) %(dbpass) %(dbname) %(repoName) %(repoPass)'
             ], backupCallParams ],
 	    [ me.cmd, [
-                'bash /root/%(envName)_backup-logic.sh backup %(baseUrl) %(backupType) %(nodeId) %(backupLogFile) %(envName) %(backupCount) %(dbuser) %(dbpass) %(dbname)'
+                'bash /root/%(envName)_backup-logic.sh backup %(baseUrl) %(backupType) %(nodeId) %(backupLogFile) %(envName) %(backupCount) %(dbuser) %(dbpass) %(dbname) %(repoName) %(repoPass)'
             ], backupCallParams ],
 	    [ me.cmd, [
-                'bash /root/%(envName)_backup-logic.sh create_snapshot %(baseUrl) %(backupType) %(nodeId) %(backupLogFile) %(envName) %(backupCount) %(dbuser) %(dbpass) %(dbname)'
+                'bash /root/%(envName)_backup-logic.sh create_snapshot %(baseUrl) %(backupType) %(nodeId) %(backupLogFile) %(envName) %(backupCount) %(dbuser) %(dbpass) %(dbname) %(repoName) %(repoPass)'
             ], backupCallParams ],
             [ me.cmd, [
-                'bash /root/%(envName)_backup-logic.sh rotate_snapshots %(baseUrl) %(backupType) %(nodeId) %(backupLogFile) %(envName) %(backupCount) %(dbuser) %(dbpass) %(dbname)'
+                'bash /root/%(envName)_backup-logic.sh rotate_snapshots %(baseUrl) %(backupType) %(nodeId) %(backupLogFile) %(envName) %(backupCount) %(dbuser) %(dbpass) %(dbname) %(repoName) %(repoPass)'
             ], backupCallParams ],
             [ me.cmd, [
-                'bash /root/%(envName)_backup-logic.sh check_backup_repo %(baseUrl) %(backupType) %(nodeId) %(backupLogFile) %(envName) %(backupCount) %(dbuser) %(dbpass) %(dbname)'
+                'bash /root/%(envName)_backup-logic.sh check_backup_repo %(baseUrl) %(backupType) %(nodeId) %(backupLogFile) %(envName) %(backupCount) %(dbuser) %(dbpass) %(dbname) %(repoName) %(repoPass)'
             ], backupCallParams ],
         [ me.removeMounts ]
         ]);
@@ -172,7 +176,7 @@ function BackupManager(config) {
 		'source /etc/jelastic/metainf.conf',
 		'RESTIC_PASSWORD=$(cat /root/.backupedenv) restic -r /opt/backup/$(cat /root/.backupedenv) restore ${SNAPSHOT_ID} --target /',
 		'if [ "$COMPUTE_TYPE" == "redis" ]; then rm -f /root/redis-restore.sh; wget -O /root/redis-restore.sh %(baseUrl)/scripts/redis-restore.sh; chmod +x /root/redis-restore.sh; bash /root/redis-restore.sh; else true; fi',
-		'[ "$COMPUTE_TYPE" == "postgres" ] && PGPASSWORD=%(dbpass) pg_restore -U %(dbuser) -d %(dbname) -Fc --filename /root/postgres.dump || true',
+		'if [ "$COMPUTE_TYPE" == "postgres" ] && PGPASSWORD=%(dbpass) pg_restore -U %(dbuser) -d %(dbname) -Fc --filename /root/postgres.dump || true',
 		'if [ "$COMPUTE_TYPE" == "mariadb" ] || [ "$COMPUTE_TYPE" == "mysql" ] || [ "$COMPUTE_TYPE" == "percona" ]; then mysql -h localhost -u %(dbuser) -p%(dbpass) --force < /root/db_backup.sql; else true; fi',
 		'jem service restart',
 		'if [ -n "$REPLICA_PSWD" ] && [ -n "$REPLICA_USER" ] ; then wget %(baseUrl)/scripts/setupUser.sh -O /root/setupUser.sh &>> /var/log/run.log; bash /root/setupUser.sh ${REPLICA_USER} ${REPLICA_PSWD} %(userEmail) %(envName) %(userSession); fi'

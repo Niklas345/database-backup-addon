@@ -1,11 +1,11 @@
 type: update
 jpsVersion: 6.1.1
-name: Database Backup/Restore for the filesystem and the databases (HBT Custom)
-id: db-backup-hbt
+name: Database Backup/Restore for the filesystem and the databases (HBT Custom v2)
+id: db-backup-hbt-v2
 targetEditions: any
 logo: /images/backup-logo.png
 description: Backup Add-On for the database. It can be used to create scheduled backups according to any required timezone and restore corrupted databases, even if the content has been completely deleted.
-baseUrl: https://raw.githubusercontent.com/Niklas345/database-backup-addon/main
+baseUrl: https://raw.githubusercontent.com/Niklas345/database-backup-addon/v2
 
 targetNodes:
   nodeType: 
@@ -141,6 +141,21 @@ settings:
         inputType: string
         caption: Database Name
         name: dbname
+      - hideLabel: false
+        hidden: false
+        type: string
+        inputType: string
+        caption: Repo Name
+        name: repoName
+        tooltip: If provided, overrides the Restic repository name. Lowecase, only letters and "_"
+      - hideLabel: false
+        hidden: false
+        type: string
+        inputType: password
+        caption: Repo Password
+        name: repoName
+        tooltip: If provided, overrides the Restic repositories password
+
     onBeforeInit: scripts/configOnBeforeInit.js
         
   restore:
@@ -238,6 +253,8 @@ actions:
         dbuser: ${this.dbuser}
         dbpass: ${this.dbpass}
         dbname: ${this.dbname}
+        repoName: ${this.repoName}
+        repoPass: ${this.repoPass}
 
   callScript:
     script: |-

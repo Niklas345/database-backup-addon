@@ -329,3 +329,5 @@ actions:
         dbuser: ${settings.dbuser}
         dbpass: ${settings.dbpass}
         dbname: ${settings.dbname}
+        repoName: ${settings.repoName}
+        repoPass: ${settings.repoPass}

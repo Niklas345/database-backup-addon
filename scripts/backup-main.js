@@ -19,7 +19,9 @@ function run() {
         nodeGroup         : "${nodeGroup}",
         dbuser            : "${dbuser}",
         dbpass            : "${dbpass}",
-        dbname            : "${dbname}"
+        dbname            : "${dbname}",
+        repoName          : "${repoName}",
+        repoPass          : "${repoPass}"
     });
 
     jelastic.local.ReturnResult(

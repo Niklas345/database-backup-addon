@@ -20,8 +20,8 @@ function run() {
         dbuser            : "${dbuser}",
         dbpass            : "${dbpass}",
         dbname            : "${dbname}",
-        repoName          : "${repoName}",
-        repoPass          : "${repoPass}"
+        reponame          : "${reponame}",
+        repopass          : "${repopass}"
     });
 
     jelastic.local.ReturnResult(

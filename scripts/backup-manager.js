@@ -16,8 +16,8 @@ function BackupManager(config) {
      *  [backupCount] : {String}
      *  [dbuser]: {String}
      *  [dbpass]: {String}
-     *  [repoName]: {String}
-     *  [repoPass]: {String}
+     *  [reponame]: {String}
+     *  [repopass]: {String}
      * }} config
      * @constructor
      */
@@ -123,8 +123,8 @@ function BackupManager(config) {
                 dbuser: config.dbuser,
                 dbpass: config.dbpass,
                 dbname: config.dbname,
-                repoName: config.repoName,
-                repoPass: config.repoPass
+                reponame: config.reponame,
+                repopass: config.repopass
             }
         
         return me.exec([
@@ -149,21 +149,21 @@ function BackupManager(config) {
             [
                 me.cmd,
                 [
-                    'bash /root/%(envName)_backup-logic.sh check_backup_repo %(baseUrl) %(backupType) %(nodeId) %(backupLogFile) %(envName) %(backupCount) %(dbuser) %(dbpass) %(dbname) %(repoName) %(repoPass)'
+                    'bash /root/%(envName)_backup-logic.sh check_backup_repo %(baseUrl) %(backupType) %(nodeId) %(backupLogFile) %(envName) %(backupCount) %(dbuser) %(dbpass) %(dbname) %(reponame) %(repopass)'
                 ],
                 backupCallParams
             ],
 	    [ me.cmd, [
-                'bash /root/%(envName)_backup-logic.sh backup %(baseUrl) %(backupType) %(nodeId) %(backupLogFile) %(envName) %(backupCount) %(dbuser) %(dbpass) %(dbname) %(repoName) %(repoPass)'
+                'bash /root/%(envName)_backup-logic.sh backup %(baseUrl) %(backupType) %(nodeId) %(backupLogFile) %(envName) %(backupCount) %(dbuser) %(dbpass) %(dbname) %(reponame) %(repopass)'
             ], backupCallParams ],
 	    [ me.cmd, [
-                'bash /root/%(envName)_backup-logic.sh create_snapshot %(baseUrl) %(backupType) %(nodeId) %(backupLogFile) %(envName) %(backupCount) %(dbuser) %(dbpass) %(dbname) %(repoName) %(repoPass)'
+                'bash /root/%(envName)_backup-logic.sh create_snapshot %(baseUrl) %(backupType) %(nodeId) %(backupLogFile) %(envName) %(backupCount) %(dbuser) %(dbpass) %(dbname) %(reponame) %(repopass)'
             ], backupCallParams ],
             [ me.cmd, [
-                'bash /root/%(envName)_backup-logic.sh rotate_snapshots %(baseUrl) %(backupType) %(nodeId) %(backupLogFile) %(envName) %(backupCount) %(dbuser) %(dbpass) %(dbname) %(repoName) %(repoPass)'
+                'bash /root/%(envName)_backup-logic.sh rotate_snapshots %(baseUrl) %(backupType) %(nodeId) %(backupLogFile) %(envName) %(backupCount) %(dbuser) %(dbpass) %(dbname) %(reponame) %(repopass)'
             ], backupCallParams ],
             [ me.cmd, [
-                'bash /root/%(envName)_backup-logic.sh check_backup_repo %(baseUrl) %(backupType) %(nodeId) %(backupLogFile) %(envName) %(backupCount) %(dbuser) %(dbpass) %(dbname) %(repoName) %(repoPass)'
+                'bash /root/%(envName)_backup-logic.sh check_backup_repo %(baseUrl) %(backupType) %(nodeId) %(backupLogFile) %(envName) %(backupCount) %(dbuser) %(dbpass) %(dbname) %(reponame) %(repopass)'
             ], backupCallParams ],
         [ me.removeMounts ]
         ]);

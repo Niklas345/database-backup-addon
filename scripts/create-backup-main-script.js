@@ -1,7 +1,7 @@
 //@auth
 //@req(baseUrl, cronTime, dbuser, dbpass)
-var repoName          = getParam("repoName");
-var defaultScriptName = "${env.envName}-wp-backup-" + repoName;
+var reponame          = getParam("reponame");
+var defaultScriptName = "${env.envName}-wp-backup-" + reponame;
 var scriptName        = getParam("scriptName", defaultScriptName);
 var envName           = getParam("envName", "${env.envName}");
 var envAppid          = getParam("envAppid", "${env.appid}");
@@ -14,7 +14,7 @@ var nodeGroup         = getParam("nodeGroup");
 var dbuser            = getParam("dbuser");
 var dbpass            = getParam("dbpass");
 var dbname            = getParam("dbname");
-var repoPass          = getParam("repoPass");
+var repopass          = getParam("repopass");
 
 function run() {
     var BackupManager = use("scripts/backup-manager.js", {
@@ -33,8 +33,8 @@ function run() {
         dbuser            : dbuser,
         dbpass            : dbpass,
         dbname            : dbname,
-        repoName          : repoName,
-        repoPass          : repoPass,
+        reponame          : reponame,
+        repopass          : repopass,
     });
 
     jelastic.local.ReturnResult(

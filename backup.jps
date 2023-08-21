@@ -146,14 +146,14 @@ settings:
         type: string
         inputType: string
         caption: Repo Name
-        name: repoName
+        name: reponame
         tooltip: If provided, overrides the Restic repository name. Lowecase, only letters and "_"
       - hideLabel: false
         hidden: false
         type: string
         inputType: password
         caption: Repo Password
-        name: repoPass
+        name: repopass
         tooltip: If provided, overrides the Restic repositories password
 
     onBeforeInit: scripts/configOnBeforeInit.js
@@ -253,8 +253,8 @@ actions:
         dbuser: ${this.dbuser}
         dbpass: ${this.dbpass}
         dbname: ${this.dbname}
-        repoName: ${this.repoName}
-        repoPass: ${this.repoPass}
+        reponame: ${this.reponame}
+        repopass: ${this.repopass}
 
   callScript:
     script: |-
@@ -329,5 +329,5 @@ actions:
         dbuser: ${settings.dbuser}
         dbpass: ${settings.dbpass}
         dbname: ${settings.dbname}
-        repoName: ${settings.repoName}
-        repoPass: ${settings.repoPass}
+        reponame: ${settings.reponame}
+        repopass: ${settings.repopass}

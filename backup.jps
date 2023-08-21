@@ -153,7 +153,7 @@ settings:
         type: string
         inputType: password
         caption: Repo Password
-        name: repoName
+        name: repoPass
         tooltip: If provided, overrides the Restic repositories password
 
     onBeforeInit: scripts/configOnBeforeInit.js

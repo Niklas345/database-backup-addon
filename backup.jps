@@ -241,7 +241,7 @@ actions:
     - getStorageCtid
     - script: ${baseUrl}/scripts/create-backup-main-script.js?_r=${fn.random}
       params:
-        scriptName: ${env.envName}-${globals.scriptSufix}
+        scriptName: ${env.envName}-${globals.scriptSufix}-${this.reponame}
         baseUrl: ${baseUrl}
         cronTime: ${this.cronTime}
         backupCount: ${this.backupCount}

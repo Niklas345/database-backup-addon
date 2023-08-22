@@ -113,27 +113,27 @@ function BackupManager(config) {
             backupType = "auto";
         }
 
-	var backupCallParams = {
-                nodeId : config.backupExecNode,
-                envName : config.envName,
-                backupCount : config.backupCount,
-                backupLogFile : "/var/log/backup_addon.log",
-                baseUrl : config.baseUrl,
-                backupType : backupType,
-                dbuser: config.dbuser,
-                dbpass: config.dbpass,
-                dbname: config.dbname,
-                reponame: config.reponame,
-                repopass: config.repopass
-            }
-        
+        var backupCallParams = {
+            nodeId: config.backupExecNode,
+            envName: config.envName,
+            backupCount: config.backupCount,
+            backupLogFile: "/var/log/backup_addon.log",
+            baseUrl: config.baseUrl,
+            backupType: backupType,
+            dbuser: config.dbuser,
+            dbpass: config.dbpass,
+            dbname: config.dbname,
+            reponame: config.reponame,
+            repopass: config.repopass
+        }
+
         return me.exec([
-            [ me.checkEnvStatus ],
-            [ me.checkStorageEnvStatus ],
-	    [ me.checkCurrentlyRunningBackup ],
-	    [ me.checkCredentials ],
-            [ me.removeMounts ],
-            [ me.addMountForBackup ],
+            [me.checkEnvStatus],
+            [me.checkStorageEnvStatus],
+            [me.checkCurrentlyRunningBackup],
+            [me.checkCredentials],
+            [me.removeMounts],
+            [me.addMountForBackup],
             [
                 me.cmd,
                 [
@@ -141,10 +141,10 @@ function BackupManager(config) {
                     'wget -O /root/%(envName)_backup-logic.sh %(baseUrl)/scripts/backup-logic.sh'
                 ],
                 {
-                    nodeId : config.backupExecNode,
-                    envName : config.envName,
-                    baseUrl : config.baseUrl
-	            }
+                    nodeId: config.backupExecNode,
+                    envName: config.envName,
+                    baseUrl: config.baseUrl
+                }
             ],
             [
                 me.cmd,
@@ -153,19 +153,19 @@ function BackupManager(config) {
                 ],
                 backupCallParams
             ],
-	    [ me.cmd, [
+            [me.cmd, [
                 'bash /root/%(envName)_backup-logic.sh backup %(baseUrl) %(backupType) %(nodeId) %(backupLogFile) %(envName) %(backupCount) %(dbuser) %(dbpass) %(dbname) %(reponame) %(repopass)'
-            ], backupCallParams ],
-	    [ me.cmd, [
+            ], backupCallParams],
+            [me.cmd, [
                 'bash /root/%(envName)_backup-logic.sh create_snapshot %(baseUrl) %(backupType) %(nodeId) %(backupLogFile) %(envName) %(backupCount) %(dbuser) %(dbpass) %(dbname) %(reponame) %(repopass)'
-            ], backupCallParams ],
-            [ me.cmd, [
+            ], backupCallParams],
+            [me.cmd, [
                 'bash /root/%(envName)_backup-logic.sh rotate_snapshots %(baseUrl) %(backupType) %(nodeId) %(backupLogFile) %(envName) %(backupCount) %(dbuser) %(dbpass) %(dbname) %(reponame) %(repopass)'
-            ], backupCallParams ],
-            [ me.cmd, [
+            ], backupCallParams],
+            [me.cmd, [
                 'bash /root/%(envName)_backup-logic.sh check_backup_repo %(baseUrl) %(backupType) %(nodeId) %(backupLogFile) %(envName) %(backupCount) %(dbuser) %(dbpass) %(dbname) %(reponame) %(repopass)'
-            ], backupCallParams ],
-        [ me.removeMounts ]
+            ], backupCallParams],
+            [me.removeMounts]
         ]);
     };
 

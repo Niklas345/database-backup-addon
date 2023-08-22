@@ -258,14 +258,14 @@ actions:
 
   callScript:
     script: |-
-      var resp = jelastic.dev.scripting.Eval(appid, session, '${env.envName}-${globals.scriptSufix}-${this.reponame}', {action:"${this}"});
+      var resp = jelastic.dev.scripting.Eval(appid, session, '${env.envName}-${globals.scriptSufix}-${settings.reponame}', {action:"${this}"});
       return resp.response || resp;
       
   removeScript:
     script: |-
-      var resp = jelastic.dev.scripting.GetScript(appid, session, '${env.envName}-${globals.scriptSufix}-${this.reponame}');
+      var resp = jelastic.dev.scripting.GetScript(appid, session, '${env.envName}-${globals.scriptSufix}-${settings.reponame}');
       if (resp.result === 0) {
-          var resp = jelastic.dev.scripting.DeleteScript(appid, session, '${env.envName}-${globals.scriptSufix}-${this.reponame}');
+          var resp = jelastic.dev.scripting.DeleteScript(appid, session, '${env.envName}-${globals.scriptSufix}-${settings.reponame}');
           return resp.response || resp;
       }
       return { result: 0 };
